@@ -1,0 +1,31 @@
+plugins {
+    id 'java' // подключаем поддержку Java-проектов
+}
+
+group 'ru.netology' // название группы проекта
+version '1.0-SNAPSHOT' // версия проекта
+
+sourceCompatibility = 11 // версия языка Java (мы работаем с Java 11)
+
+compileJava.options.encoding = 'UTF-8' // кодировка файлов Java
+compileTestJava.options.encoding = 'UTF-8' // кодировка тестов
+
+repositories {
+    mavenCentral() // откуда скачивать библиотеки (главный репозиторий Maven)
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.1' // библиотека для тестов JUnit 5
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.18.1' // библиотека для управления браузером Selenium
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.7.0' // библиотека для автоматической настройки WebDriver
+}
+
+test {
+    useJUnitPlatform() // указываем Gradle использовать платформу тестирования JUnit 5
+
+    // передача параметров при запуске тестов (актуально, если используем Selenide)
+    systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+
+    // настройка параметров браузера (выключение менеджера паролей)
+    systemProperty 'chromeoptions.prefs', System.getProperty('chromeoptions.prefs', "profile.password_manager_leak_detection=false")
+}
